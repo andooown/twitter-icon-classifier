@@ -4,6 +4,8 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+bottle = "*"
+tweepy = "*"
 
 [dev-packages]
 pylint = "*"
