@@ -1,0 +1,8 @@
+# pipenv
+.venv
+
+# Editor
+.vscode
+
+# env
+.env
