@@ -3,6 +3,10 @@ let currentScreenName = '';
 let model;
 tf.loadModel('model/model.json').then(loadedModel => {
     model = loadedModel;
+
+    $("#progressBar").fadeOut(300, function () {
+        $("#topContainer").fadeIn(300);
+    });
 });
 
 $("#selectedFile").on("change", function (e) {
@@ -46,19 +50,27 @@ $("#searchButton").click(function (e) {
 });
 
 $("#classifyButton").click(function (e) {
-    const img = getImage();
+    $("#classifyContainer").fadeOut(300);
+    $("#menuContainer").fadeOut(300, function () {
+        $("#progressLabel").text("診断中.....")
+        $("#progressBar").fadeIn(300, function () {
+            const img = getImage();
+            predict(img).then(scores => {
+                setResult(scores[0]);
 
-    let score;
-    try {
-        score = predict(img);
-    } catch (e) {
-        showAlert("診断できませんでした。");
-        gtag('event', 'classify', {'event_label': 'failure'})
-        return;
-    }
+                $("#progressBar").fadeOut(300, function () {
+                    $("#resultContainer").fadeIn(300, function () {
+                        $("#reloadButton").fadeIn(300);
+                    });
+                });
 
-    showResult(score);
-    gtag('event', 'classify', {'event_label': 'success'});
+                gtag('event', 'classify', {'event_label': 'success'});
+            }).catch(() => {
+                showAlert("診断できませんでした。");
+                gtag('event', 'classify', {'event_label': 'failure'});
+            });
+        });
+    });
 });
 
 function setPreviewImage(bytes) {
@@ -73,7 +85,7 @@ function setPreviewImage(bytes) {
             class: "img-fluid"
         }));
         
-        $("#classifyContainer").show();
+        $("#classifyContainer").fadeIn(300);
         $("#alert").hide();
     };
     reader.readAsDataURL(bytes);
@@ -95,11 +107,10 @@ function predict(img) {
     inputTensor = tf.cast(inputTensor, 'float32').div(tf.scalar(255));
     inputTensor = inputTensor.expandDims();
 
-    const scores = model.predict(inputTensor).dataSync();
-    return scores[0];
+    return model.predict(inputTensor).data();
 }
 
-function showResult(score) {
+function setResult(score) {
     var resultText = (score * 100.0).toFixed(2) + "%";
     $("#result").text(resultText);
     
@@ -110,12 +121,6 @@ function showResult(score) {
     $("#resultDescription").text(description);
 
     $("#tweetButton").attr("href", getShareUrl(resultText, description));
-
-    $("#classifyContainer").hide();
-    $("#menuContainer").hide();
-    $("#resultContainer").fadeIn(1000, function () {
-        $("#reloadButton").fadeIn(1000);
-    });
 }
 
 function getLevel(score) {
