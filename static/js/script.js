@@ -139,7 +139,7 @@ function getLevel(score) {
 
 function getShareUrl(result, description) {
     var encodedText = encodeURI(description + "陽キャ度: " + result + " | 機械学習でTwitterアイコンを陽キャ・陰キャ診断");
-    return "https://twitter.com/intent/tweet?text=" + encodedText + "&url=https://twitter-icon-classifier.andooown.com/&hashtags=陽キャ陰キャ診断";
+    return "https://twitter.com/intent/tweet?text=" + encodedText + "&url=" + location.href +"&hashtags=陽キャ陰キャ診断";
 }
 
 function showAlert(caption) {
