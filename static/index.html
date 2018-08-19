@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-109217028-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'UA-109217028-1');
+    </script>
+    <!-- End Google Analytics -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>twitter-icon-classifier: 機械学習でTwitterアイコンを陽キャ・陰キャ診断</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
+          integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+</head>
+<body>
+<nav class="navbar navbar-light bg-primary">
+    <span class="navbar-brand mb-0 h1 text-white">twitter-icon-classifier</span>
+</nav>
+
+<div class="container">
+    <div class="mt-5 text-center">
+        <h1 class="display-4">陽キャ・陰キャ診断</h1>
+        <p>
+            機械学習を使ってTwitterアイコンなどの画像をもとに陽キャ・陰キャ診断ができます。<br>
+            (正方形の画像のほうが正しく診断できます)
+        </p>
+        <hr>
+        
+        <div id="progressBar" class="progress" style="height: 30px">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"><span id="progressLabel">モデル読み込み中.....</span></div>
+        </div>
+
+        <div id="topContainer" style="display: none">
+            <div id="menuContainer">
+                <div class="input-group">
+                    <input id="screenNameText" type="text" class="form-control" placeholder="ID検索">
+                    <label class="input-group-btn">
+                        <span class="btn btn-outline-primary">
+                            検索
+                            <input id="searchButton" type="button" style="display:none">
+                        </span>
+                    </label>
+                </div>
+                または<br>
+                <label>
+                    <span class="btn btn-outline-primary">
+                        画像アップロード
+                        <input id="selectedFile" type="file" style="display: none">
+                    </span>
+                </label>
+            </div>
+
+            <div id="classifyContainer" style="display: none">
+                <label>
+                    <span class="btn btn-primary btn-lg btn-block">
+                        診断する
+                        <input id="classifyButton" type="button" style="display: none">
+                    </span>
+                </label>
+            </div>
+
+            <div id="resultContainer" style="display: none">
+                <h2>陽キャ度: <strong><span id="result"></span></strong></h2>
+                <div id="resultDescription" class="h3"></div>
+                <a id="tweetButton" href="" onClick="window.open(encodeURI(decodeURI(this.href)), 'tweetwindow', 'width=650, height=470, personalbar=0, toolbar=0, scrollbars=1, sizable=1'); return false;" rel="nofollow" class="btn btn-primary twitter-link">結果をつぶやく</a>
+                <a id="reloadButton" class="btn btn-outline-primary" href="." role="button">もう一度診断する</a>
+            </div>
+
+            <div id="alert" class="alert alert-danger fade show" role="alert" style="display: none">
+                <span id="alertCaption"></span>
+            </div>
+
+            <div id="imagePreview" class="my-1">
+                <img class="img-fluid" src="https://placehold.jp/500x500.png?text=%E7%94%BB%E5%83%8F">
+            </div>
+        </div>
+
+        <hr>
+        <p>
+            製作者: あんどー。
+            <a href="https://twitter.com/andooown_dev" target=”_blank” class="badge badge-primary">Twitter</a>
+            <a href="mailto:andooown.dev@gmail.com" class="badge badge-primary">Mail</a>
+        </p>
+        <hr>
+        <p>
+            ※このサイトを利用することで生じたいかなる損害も保証致しません。<br>
+            ※このサイトの利用は自己責任でお願い致します。
+        </p>
+    </div>
+</div>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous"></script>
+<!-- Popper.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+        integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+        crossorigin="anonymous"></script>
+<!-- Bootstrap -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
+        integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+        crossorigin="anonymous"></script>
+<!-- WebDNN -->
+<script src="js/inflate.min.js"></script>
+<script src="js/webdnn.es5.js"></script>
+<!-- Script-->
+<script src="js/script.js"></script>
+</body>
+</html>
