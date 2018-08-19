@@ -2,9 +2,9 @@ pipeline {
   agent any
   stages {
     stage('deploy') {
+      when { branch 'master' }
       steps {
-        sh '''/var/www/app/twitter-icon-classifier/deploy.sh
-'''
+        sh './deploy.sh'
       }
     }
   }
