@@ -23,6 +23,7 @@ pipenv install
 
 if [ -e uwsgi.pid ] && [ -x /proc/`cat uwsgi.pid` ]; then
     pipenv run stop
+    sleep 5
 fi
 
 count=5
