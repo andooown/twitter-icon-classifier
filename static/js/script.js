@@ -1,12 +1,15 @@
 let currentScreenName = '';
 
-let model;
-tf.loadModel('model/model.json').then(loadedModel => {
-    model = loadedModel;
+let runner;
+WebDNN.load('model', {backendOrder: ["webgpu", "webassembly"]}).then(function(r) {
+    runner = r;
 
     $("#progressBar").fadeOut(300, function () {
         $("#topContainer").fadeIn(300);
     });
+}).catch(() => {
+    $("#progressLabel").text("モデルが読み込めませんでした");
+    $(".progress-bar").addClass("bg-danger");
 });
 
 $("#selectedFile").on("change", function (e) {
@@ -54,20 +57,21 @@ $("#classifyButton").click(function (e) {
     $("#menuContainer").fadeOut(300, function () {
         $("#progressLabel").text("診断中.....")
         $("#progressBar").fadeIn(300, function () {
-            const img = getImage();
-            predict(img).then(scores => {
-                setResult(scores[0]);
+            WebDNN.Image.getImageArray(getImageData(), { scale: [255, 255, 255] }).then(inputArray => {
+                runner.getInputViews()[0].set(inputArray);
+                runner.run().then(function () {
+                    const scores = runner.getOutputViews()[0].toActual();
+                    setResult(scores[0]);
 
-                $("#progressBar").fadeOut(300, function () {
-                    $("#resultContainer").fadeIn(300, function () {
-                        $("#reloadButton").fadeIn(300);
+                    $("#progressBar").fadeOut(300, function () {
+                        $("#resultContainer").fadeIn(300, function () {
+                            $("#reloadButton").fadeIn(300);
+                        });
                     });
+                }).catch(() => {
+                    showAlert("診断できませんでした。");
+                    gtag('event', 'classify', {'event_label': 'failure'});
                 });
-
-                gtag('event', 'classify', {'event_label': 'success'});
-            }).catch(() => {
-                showAlert("診断できませんでした。");
-                gtag('event', 'classify', {'event_label': 'failure'});
             });
         });
     });
@@ -91,7 +95,7 @@ function setPreviewImage(bytes) {
     reader.readAsDataURL(bytes);
 }
 
-function getImage() {
+function getImageData() {
     const inputImageWidth = 224, inputImageHeight = 224;
 
     const context = document.createElement("canvas").getContext("2d");
@@ -100,14 +104,6 @@ function getImage() {
     
     const img = context.getImageData(0, 0, inputImageWidth, inputImageHeight);
     return img;
-}
-
-function predict(img) {
-    let inputTensor = tf.fromPixels(img, 3);
-    inputTensor = tf.cast(inputTensor, 'float32').div(tf.scalar(255));
-    inputTensor = inputTensor.expandDims();
-
-    return model.predict(inputTensor).data();
 }
 
 function setResult(score) {
