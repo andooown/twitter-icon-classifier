@@ -20,9 +20,20 @@ else
 fi
 
 pipenv install
-if [ -e uwsgi.pid ]; then
-    if [ -x /proc/`cat uwsgi.pid` ]; then
-        pipenv run stop
-    fi
+
+if [ -e uwsgi.pid ] && [ -x /proc/`cat uwsgi.pid` ]; then
+    pipenv run stop
 fi
-(nohup pipenv run start >/dev/null 2>&1 &)
+
+count=5
+while [ ! -e uwsgi.pid ] || [ ! -x /proc/`cat uwsgi.pid` ]
+do
+    if [ $count -le 0 ]; then
+        exit 1
+    fi
+
+    (nohup pipenv run start >/dev/null 2>&1 &)
+    
+    sleep 5
+    let "count = count - 1"
+done
