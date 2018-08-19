@@ -21,6 +21,8 @@ fi
 
 pipenv install
 if [ -e uwsgi.pid ]; then
-    pipenv run stop
+    if [ -x /proc/`cat uwsgi.pid` ]; then
+        pipenv run stop
+    fi
 fi
 nohup pipenv run start &
