@@ -25,4 +25,4 @@ if [ -e uwsgi.pid ]; then
         pipenv run stop
     fi
 fi
-nohup pipenv run start &
+(nohup pipenv run start >/dev/null 2>&1 &)
