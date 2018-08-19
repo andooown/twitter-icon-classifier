@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 
-from bottle import run, route, HTTPResponse
+from bottle import run, route, HTTPResponse, default_app
 import tweepy
 import argparse
 import json
 import os
+
+URL_PREFIX = '/app/twitter-icon-classifier/api'
 
 CONSUMER_KEY = os.environ['TWITTER_CONSUMER_KEY']
 CONSUMER_SECRET = os.environ['TWITTER_CONSUMER_SECRET']
@@ -26,7 +28,7 @@ def create_json_response(data):
     return response
 
 
-@route('/get_icon_url/<screen_name>')
+@route(URL_PREFIX + '/get_icon_url/<screen_name>')
 def get_icon_url(screen_name):
     if not screen_name:
         print('[ERROR] screen_name is None.')
@@ -49,3 +51,5 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     run(server='waitress', host='localhost', port=args.port, debug=args.debug)
+else:
+    application = default_app()

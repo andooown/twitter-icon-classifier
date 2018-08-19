@@ -7,14 +7,15 @@ name = "pypi"
 bottle = "*"
 tweepy = "*"
 waitress = "*"
+uwsgi = "*"
 
 [dev-packages]
 pylint = "*"
-tensorflowjs = "*"
 
 [requires]
 python_version = "3.6"
 
 [scripts]
 debug = "python run.py --port 8080 --debug"
-convert = "tensorflowjs_converter --input_format keras"
+start = "uwsgi --ini uwsgi.ini"
+stop = "uwsgi --stop uwsgi.pid"
