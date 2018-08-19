@@ -1,0 +1,11 @@
+# pipenv
+.venv
+
+# Editor
+.vscode
+
+# env
+.env
+
+# uwsgi
+uwsgi.pid

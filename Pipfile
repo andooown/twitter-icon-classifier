@@ -1,0 +1,21 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+bottle = "*"
+tweepy = "*"
+waitress = "*"
+uwsgi = "*"
+
+[dev-packages]
+pylint = "*"
+
+[requires]
+python_version = "3.6"
+
+[scripts]
+debug = "python run.py --port 8080 --debug"
+start = "uwsgi --ini uwsgi.ini"
+stop = "uwsgi --stop uwsgi.pid"
