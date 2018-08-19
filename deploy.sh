@@ -20,5 +20,7 @@ else
 fi
 
 pipenv install
-pipenv run stop
+if [ -e uwsgi.pid ]; then
+    pipenv run stop
+fi
 nohup pipenv run start &
