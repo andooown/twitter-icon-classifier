@@ -6,7 +6,12 @@ pipeline {
       when { branch 'master' }
       steps {
         script {
-          sh './deploy.sh'
+          try {
+            sh './deploy.sh'	
+            currentBuild.result = "SUCCESS"	
+          } catch (e) {	
+            currentBuild.result = "FAILURE"          	
+          }
         }
       }
     }
