@@ -14,8 +14,10 @@ pipeline {
 
   post {
     always {
-      if (build_result != null) {
-        notification()
+      script {
+        if (currentBuild.result != null) {
+          notification()
+        }
       }
     }
   }
