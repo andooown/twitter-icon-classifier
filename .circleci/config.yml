@@ -26,8 +26,8 @@ jobs:
             - backend/node_modules
           key: v1-dependencies-{{ checksum "backend/package-lock.json" }}
       - run:
-          name: Install Pipenv
-          command: sudo pip install pipenv
+          name: Install Pipenv and awscli
+          command: sudo pip install pipenv awscli
       - run:
           name: Deploy backend
           working_directory: backend
