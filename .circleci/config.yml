@@ -40,9 +40,8 @@ workflows:
   version: 2
   deploy:
     jobs:
-      - deploy
-      # - deploy:
-      #     filters:
-      #       branches:
-      #         only: master
+      - deploy:
+          filters:
+            branches:
+              only: master
            
