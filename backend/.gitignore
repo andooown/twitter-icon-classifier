@@ -1,6 +1,9 @@
 # Node
 node_modules/
 
+# pipenv
+.venv/
+
 # Distribution / packaging
 .Python
 env/
