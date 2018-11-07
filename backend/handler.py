@@ -14,6 +14,9 @@ def get_secret(key):
 def create_response(body):
     response = {
         "statusCode": 200,
+        "headers": {
+            "Access-Control-Allow-Origin": "*"
+        },
         "body": json.dumps(body, ensure_ascii=True)
     }
 
