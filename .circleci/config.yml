@@ -1,0 +1,47 @@
+version: 2
+
+jobs:
+  deploy:
+    docker:
+      - image: circleci/python:3.6.6
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "backend/package-lock.json" }}
+          - v1-dependencies-
+      - run:
+          name: Install Node.js
+          command: |
+            curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+            sudo apt-get install -y nodejs
+            node --version && npm -v
+      - run:
+          name: Install Serverless Framework
+          working_directory: backend
+          command: npm install
+      - save_cache:
+          paths:
+            - backend/node_modules
+          key: v1-dependencies-{{ checksum "backend/package-lock.json" }}
+      - run:
+          name: Install Pipenv and awscli
+          command: sudo pip install pipenv awscli
+      - run:
+          name: Deploy backend
+          working_directory: backend
+          command: npx sls deploy --stage prd -v
+      - run:
+          name: Deploy frontend
+          command: npx aws s3 sync --delete ./frontend/ ${FRONTEND_S3_BUCKET}
+
+workflows:
+  version: 2
+  deploy:
+    jobs:
+      - deploy:
+          filters:
+            branches:
+              only: master
+           

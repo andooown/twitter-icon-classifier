@@ -27,7 +27,7 @@ $("#searchButton").click(function (e) {
     var screenName = $("#screenNameText").val();
     $.ajax({
         type: "GET",
-        url: "api/get_icon_url/" + screenName,
+        url: "https://5v511nmei4.execute-api.us-east-1.amazonaws.com/prd/get_icon_url/" + screenName,
         dataType: "json"
     }).done(function (data, textStatus, jqXHR) {
         if (!data.success) {
