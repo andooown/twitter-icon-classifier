@@ -23,14 +23,13 @@ jobs:
           command: npm install
       - save_cache:
           paths:
-            - backend/node_modules
+            - node_modules
           key: v1-dependencies-{{ checksum "package-lock.json" }}
       - run:
           name: Install Pipenv
           command: sudo pip install pipenv
       - run:
           name: Deploy backend
-          working_directory: backend
           command: npx sls deploy --stage prd -v
 
 workflows:
