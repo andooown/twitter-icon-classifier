@@ -1,11 +1,30 @@
-# pipenv
-.venv
-
 # Editor
 .vscode
 
 # env
 .env
 
-# uwsgi
-uwsgi.pid
+# Node
+node_modules/
+# Serverless directories
+.serverless
+
+# pipenv
+.venv/
+# Distribution / packaging
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
